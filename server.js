@@ -14,16 +14,16 @@ app.get('/api/dados-completos', async (req, res) => {
     const response = await fetch("https://api.zerosheets.com/v1/id0");
     if (!response.ok) throw new Error("Erro HTTP " + response.status);
 
-    const dados = await response.json();
+    const rawData = await response.json();
 
-    // Ajuste: transformar os dados no formato esperado pelo frontend
-    const dadosFormatados = dados.map(item => ({
-      escola_id: parseInt(item.escola_id, 10),
-      escola_nome: item.escola_nome || "",
-      programa_id: parseInt(item.programa_id, 10),
-      programa_nome: item.programa_nome || "",
-      programa_descricao: item.programa_descricao || "",
-      status: item.status || "Não Iniciado"
+    // Transformar os dados no formato esperado pelo frontend
+    const dadosFormatados = rawData.map(item => ({
+      escola_id: parseInt(item.escola_id || item.EscolaID || item._escola_id, 10),
+      escola_nome: item.escola_nome || item.EscolaNome || "",
+      programa_id: parseInt(item.programa_id || item.ProgramaID || item._programa_id, 10),
+      programa_nome: item.programa_nome || item.ProgramaNome || "",
+      programa_descricao: item.programa_descricao || item.Descricao || "",
+      status: item.status || item.Status || "Não Iniciado"
     }));
 
     res.json(dadosFormatados);
