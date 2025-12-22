@@ -27,7 +27,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Página Dados (funciona tanto em /dados quanto /dados.html)
 app.get('/dados', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Dados.html'));
+});
+app.get('/dados.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'Dados.html'));
 });
 
