@@ -6,8 +6,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-
-// Servir arquivos estáticos da pasta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota de API para dados completos
@@ -18,7 +16,7 @@ app.get('/api/dados-completos', async (req, res) => {
 
     const dados = await response.json();
 
-    // Ajuste: transformar os dados no formato esperado pelo front
+    // Ajuste: transformar os dados no formato esperado pelo frontend
     const dadosFormatados = dados.map(item => ({
       escola_id: parseInt(item.escola_id, 10),
       escola_nome: item.escola_nome || "",
@@ -35,7 +33,7 @@ app.get('/api/dados-completos', async (req, res) => {
   }
 });
 
-// Rotas amigáveis para páginas HTML existentes
+// Rotas amigáveis para páginas HTML
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
