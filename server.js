@@ -3,7 +3,9 @@ const path = require('path');
 const fetch = require('node-fetch'); // compatível com require()
 
 const app = express();
-const port = 3000;
+
+// Render exige usar process.env.PORT
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -26,11 +28,16 @@ app.get('/api/dados-completos', async (req, res) => {
     }
 });
 
-// Fallback para SPA
+// Rota para página programa.html
+app.get('/programa', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'pg2.html'));
+});
+
+// Fallback para SPA (se não encontrar rota)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`Servidor rodando na porta ${port}`);
 });
