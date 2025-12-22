@@ -25,6 +25,7 @@
     }
   </style>
 </head>
+<!-- O ID da escola foi alterado para "3" para corresponder ao CEM Elefante Branco -->
 <body class="text-gray-800 flex flex-col min-h-screen" data-id-escola="3">
   <header class="bg-[#031f46] text-white p-4 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
@@ -102,10 +103,9 @@
 
         try {
           const response = await fetch('/api/dados-completos');
-          if (!response.ok) throw new Error('Erro HTTP ' + response.status);
           const todosOsDados = await response.json();
 
-          const programasDaEscola = todosOsDados.filter(item => parseInt(item.escola_id, 10) === idDaEscolaAtual);
+          const programasDaEscola = todosOsDados.filter(item => item.escola_id === idDaEscolaAtual);
 
           if (programasDaEscola.length === 0) {
             programasContainer.innerHTML = '<p class="text-center text-gray-500">Nenhum programa encontrado para esta escola.</p>';
@@ -115,10 +115,8 @@
           programasContainer.innerHTML = programasDaEscola.map(programa => `
             <div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-200">
               <button class="accordion-header w-full flex justify-between items-center text-left p-4 font-semibold text-gray-800 hover:bg-gray-50 transition-colors">
-                <span>${programa.programa_id} - ${programa.programa_nome}</span>
-                <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
+                <span>${programa.programa_nome}</span>
+                <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
               </button>
               <div class="accordion-content">
                 <div class="p-5 text-gray-700 leading-relaxed border-t">
@@ -132,14 +130,14 @@
             </div>
           `).join('');
 
-          adicionarLogicaAccordion();
+                    adicionarLogicaAccordion();
         } catch (error) {
           console.error("Erro ao carregar os programas:", error);
           programasContainer.innerHTML = '<p class="text-center text-red-500">Falha ao carregar os dados. Verifique se o servidor está rodando.</p>';
         }
       }
 
-            function adicionarLogicaAccordion() {
+      function adicionarLogicaAccordion() {
         programasContainer.querySelectorAll('.accordion-header').forEach(button => {
           button.addEventListener('click', () => {
             const content = button.nextElementSibling;
@@ -175,4 +173,3 @@
   </script>
 </body>
 </html>
-
