@@ -10,12 +10,25 @@ app.use(express.json());
 // Servir arquivos estáticos da pasta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rota de API para dados do ZeroSheets
+// Rota de API para dados completos
 app.get('/api/dados-completos', async (req, res) => {
   try {
     const response = await fetch("https://api.zerosheets.com/v1/id0");
+    if (!response.ok) throw new Error("Erro HTTP " + response.status);
+
     const dados = await response.json();
-    res.json(dados);
+
+    // Ajuste: transformar os dados no formato esperado pelo front
+    const dadosFormatados = dados.map(item => ({
+      escola_id: parseInt(item.escola_id, 10),
+      escola_nome: item.escola_nome || "",
+      programa_id: parseInt(item.programa_id, 10),
+      programa_nome: item.programa_nome || "",
+      programa_descricao: item.programa_descricao || "",
+      status: item.status || "Não Iniciado"
+    }));
+
+    res.json(dadosFormatados);
   } catch (err) {
     console.error("Erro ao buscar dados:", err.message);
     res.status(500).json({ error: "Falha ao buscar dados." });
@@ -27,7 +40,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Página Dados (funciona tanto em /dados quanto /dados.html)
 app.get('/dados', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'Dados.html'));
 });
