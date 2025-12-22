@@ -102,6 +102,7 @@
 
         try {
           const response = await fetch('/api/dados-completos');
+          if (!response.ok) throw new Error('Erro HTTP ' + response.status);
           const todosOsDados = await response.json();
 
           const programasDaEscola = todosOsDados.filter(item => parseInt(item.escola_id, 10) === idDaEscolaAtual);
@@ -121,7 +122,7 @@
               </button>
               <div class="accordion-content">
                 <div class="p-5 text-gray-700 leading-relaxed border-t">
-                  <p class="mb-4">${programa.programa_nome}</p>
+                  <p class="mb-4">${programa.programa_descricao}</p>
                   <div class="p-4 rounded-md border-l-4 ${statusColors[programa.status]}">
                     <h5 class="font-bold">Situação Atual na Escola</h5>
                     <p class="text-sm mt-1">O status deste programa é: <strong>${programa.status}</strong>.</p>
@@ -136,9 +137,9 @@
           console.error("Erro ao carregar os programas:", error);
           programasContainer.innerHTML = '<p class="text-center text-red-500">Falha ao carregar os dados. Verifique se o servidor está rodando.</p>';
         }
-            }
+      }
 
-      function adicionarLogicaAccordion() {
+            function adicionarLogicaAccordion() {
         programasContainer.querySelectorAll('.accordion-header').forEach(button => {
           button.addEventListener('click', () => {
             const content = button.nextElementSibling;
@@ -174,3 +175,4 @@
   </script>
 </body>
 </html>
+
