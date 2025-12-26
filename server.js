@@ -17,7 +17,7 @@ app.get('/health', (req, res) => {
 // Rota de API para dados completos
 app.get('/api/dados-completos', async (req, res) => {
   try {
-    const url = 'https://api.zerosheets.com/v1/id0';
+    const url = 'https://api.zerosheets.com/v1/vjp';
     const response = await fetch(url, { method: 'GET' });
 
     if (!response.ok) {
